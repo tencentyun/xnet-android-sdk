@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 28
+    }
+
+    buildTypes {
+        debug {
+            ndk {
+                abiFilters 'armeabi-v7a'
+            }
+
+        }
+
+        release {
+            ndk {
+                abiFilters 'armeabi-v7a', 'x86', 'arm64-v8a', 'x86_64'
+            }
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+publish {
+    userOrg = 'tencentyun'
+    groupId = 'com.tencent.qcloud'
+    artifactId = 'xnet'
+    publishVersion = '0.0.1'
+    desc = 'xnet android sdk'
+    website = 'https://github.com/tencentyun/xnet-android-sdk'
+
+}
