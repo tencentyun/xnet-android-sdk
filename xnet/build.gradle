@@ -30,6 +30,7 @@ android {
 }
 
 publish {
+    repoName = 'xnet-android-sdk'
     userOrg = 'tencentyun'
     groupId = 'com.tencent.qcloud'
     artifactId = 'xnet'
