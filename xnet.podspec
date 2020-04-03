@@ -20,6 +20,7 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = "9.0"
   spec.source_files = "Classes/xnet/*.{h,m,mm,c,cc,cpp}"
   spec.vendored_frameworks = "TencentXP2P.framework"
+  spec.frameworks = 'TencentXP2P'
   spec.libraries = 'c++', 'z'
 
 end
