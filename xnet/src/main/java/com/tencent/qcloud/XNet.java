@@ -56,6 +56,7 @@ public final class XNet {
 
     /**
      * 返回根据域名类型的代理域名, 直播domain默认为live.p2p.com
+     * @param domain 代理域名, 直播domain默认为live.p2p.com
      * @return 本地代理监听host/path, 默认为http://127.0.0.1:16080/domain/
      */
     public static String proxyOf(String domain) {

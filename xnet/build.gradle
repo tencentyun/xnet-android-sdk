@@ -14,7 +14,6 @@ android {
             ndk {
                 abiFilters 'armeabi-v7a'
             }
-
         }
 
         release {
@@ -29,13 +28,30 @@ android {
 
 }
 
+task setHttpProxyFromEnv {
+    def map = ['HTTP_PROXY': 'http', 'HTTPS_PROXY': 'https']
+    for (e in System.getenv()) {
+        def key = e.key.toUpperCase()
+        def base = map[key]
+        if (base?.value) {
+            def url = e.value.toURL()
+            println " - systemProp.${base}.proxy=${url.host}:${url.port}"
+            System.setProperty("${base}.proxyHost", url.host.toString())
+            System.setProperty("${base}.proxyPort", url.port.toString())
+        }
+    }
+}
+
+build.dependsOn setHttpProxyFromEnv
+
 publish {
     repoName = 'xnet-android-sdk'
     userOrg = 'tencentyun'
     groupId = 'com.tencent.qcloud'
     artifactId = 'xnet'
-    publishVersion = '0.0.1'
+    publishVersion = '0.0.2'
     desc = 'xnet android sdk'
     website = 'https://github.com/tencentyun/xnet-android-sdk'
-
 }
+
+bintrayUpload.dependsOn setHttpProxyFromEnv
