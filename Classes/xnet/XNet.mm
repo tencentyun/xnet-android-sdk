@@ -39,14 +39,12 @@ static NSString* host = @"";
                                     encoding:NSASCIIStringEncoding];
 }
 
-+ (void)enableDebug:(LogLevel)leve {
-    if (leve == LOG_ALL) {
-        XP2PService::enableDebug();
-    } else if (leve == NONE) {
-        XP2PService::disableDebug();
-    } else {
-        XP2PService::enalbeNormalLog();
-    }
++ (void)enableDebug {
+    XP2PService::enableDebug();
+}
+
++ (void)disableDebug {
+    XP2PService::disableDebug();
 }
 
 static void defaultLog(int prio, const char* msg) {

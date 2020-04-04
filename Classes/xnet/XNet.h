@@ -26,7 +26,8 @@ __attribute__((visibility("default")))
 @interface XNet : NSObject
 + (int)initWith:(NSString*)appId appKey:(NSString*)appKey appSecretKey:(NSString*)appSecretKey;
 + (NSString*)version;
-+ (void)enableDebug:(LogLevel)leve;
++ (void)enableDebug;
++ (void)disableDebug;
 + (void)setLogger:(id<Logger>)delegate;
 + (int)resume;
 + (NSString*)host;
