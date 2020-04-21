@@ -15,7 +15,10 @@ Pod::Spec.new do |spec|
   spec.homepage     = "https://github.com/tencentyun/xnet-ios-sdk"
   spec.author             = { "TencentCloud" => "XP2P" }
   spec.source       = { :git => "https://github.com/tencentyun/xnet-ios-sdk.git", :tag => spec.version.to_s }
-
+  spec.prepare_command = <<-CMD
+    curl -O https://xnet-ios-1255868781.cos.ap-guangzhou.myqcloud.com/e81b5e97a7cafd7882064bf9ab9fe50b581c113b/TencentXP2P.framework.zip
+    unzip -o TencentXP2P.framework.zip
+                   CMD
   spec.requires_arc = true
   spec.ios.deployment_target = "9.0"
   spec.source_files = "Classes/xnet/*.{h,m,mm,c,cc,cpp}"
