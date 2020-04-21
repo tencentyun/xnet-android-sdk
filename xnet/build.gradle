@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'de.undercouch.download'
 
 android {
     compileSdkVersion 28
@@ -42,7 +43,18 @@ task setHttpProxyFromEnv {
     }
 }
 
-build.dependsOn setHttpProxyFromEnv
+task downloadZipFile(type: Download) {
+    src 'https://xnet-android-1255868781.cos.ap-guangzhou.myqcloud.com/so.zip'
+    dest new File(buildDir, 'so.zip')
+    onlyIfModified true
+}
+
+task downloadAndUnzipFile(dependsOn: downloadZipFile, type: Copy) {
+    from zipTree(downloadZipFile.dest)
+    into "$rootDir/xnet/src/main/jniLibs"
+}
+
+preBuild.dependsOn setHttpProxyFromEnv, downloadAndUnzipFile
 
 publish {
     repoName = 'xnet-android-sdk'
