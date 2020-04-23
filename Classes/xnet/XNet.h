@@ -11,12 +11,6 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, LogLevel) {
-    NONE,           //关闭日志
-    LOG_GENERALLY,  //开启部分日志
-    LOG_ALL         //开启全部日志
-};
-
 @protocol Logger <NSObject>
 @required
 - (void)onLogPrint:(NSString*)msg;
