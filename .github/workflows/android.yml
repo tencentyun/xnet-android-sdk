@@ -3,7 +3,7 @@ name: Android CI
 on:
   push:    
     branches:    
-      - master
+      - feat/yml
     tags: v*
 
 jobs:
@@ -19,5 +19,5 @@ jobs:
         java-version: 1.8
     - name: Build with Gradle
       env: 
-        BINTRAY_KEY:${{ secrets.BINTRAY_KEY }}
+        BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
       run: ./gradlew build bintaryUpload -PbintrayUser=teckjiang -PbintaryKey=$BINTRAY_KEY
