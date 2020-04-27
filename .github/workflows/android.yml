@@ -1,9 +1,7 @@
 name: Android CI
 
 on:
-  push:    
-    branches:    
-      - feat/yml
+  push:
     tags: v*
 
 jobs:
