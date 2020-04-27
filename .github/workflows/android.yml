@@ -20,4 +20,4 @@ jobs:
     - name: Build with Gradle
       env: 
         BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-      run: ./gradlew build bintaryUpload -PbintrayUser=teckjiang -PbintaryKey=$BINTRAY_KEY
+      run: ./gradlew build bintrayUpload -PbintrayUser=teckjiang -PbintrayKey=$BINTRAY_KEY
