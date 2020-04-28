@@ -62,7 +62,7 @@ publish {
     userOrg = 'tencentyun'
     groupId = 'com.tencent.qcloud'
     artifactId = 'xnet'
-    publishVersion = '0.0.4'
+    publishVersion = '1.0.1'
     desc = 'xnet android sdk'
     website = 'https://github.com/tencentyun/xnet-android-sdk'
 }
