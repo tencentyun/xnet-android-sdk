@@ -4,6 +4,7 @@ apply plugin: 'de.undercouch.download'
 
 android {
     compileSdkVersion 28
+    ndkVersion "21.0.6113669"
 
     defaultConfig {
         minSdkVersion 14
@@ -61,7 +62,7 @@ publish {
     userOrg = 'tencentyun'
     groupId = 'com.tencent.qcloud'
     artifactId = 'xnet'
-    publishVersion = '0.0.3'
+    publishVersion = '0.0.4'
     desc = 'xnet android sdk'
     website = 'https://github.com/tencentyun/xnet-android-sdk'
 }
