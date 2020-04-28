@@ -45,7 +45,7 @@ task setHttpProxyFromEnv {
 }
 
 task downloadZipFile(type: Download) {
-    src 'https://xnet-android-1255868781.cos.ap-guangzhou.myqcloud.com/so.zip'
+    src 'https://xnet-android-1255868781.cos.ap-guangzhou.myqcloud.com/XP2P_CLIENT_EGAME_v5.01.01/XP2P_CLIENT_EGAME_v5.01.01_so.zip'
     dest new File(buildDir, 'so.zip')
     onlyIfModified true
 }
@@ -62,7 +62,7 @@ publish {
     userOrg = 'tencentyun'
     groupId = 'com.tencent.qcloud'
     artifactId = 'xnet'
-    publishVersion = '1.0.1'
+    publishVersion = '1.1.1'
     desc = 'xnet android sdk'
     website = 'https://github.com/tencentyun/xnet-android-sdk'
 }
