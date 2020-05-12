@@ -22,6 +22,7 @@ public final class XNet {
     private static String archCpuAbi = "";
     private static String XP2P_HOST = "";
     private static WeakReference<Context> appCtx = null;
+    private static boolean sIsSoLoaded = false;
 
     /**
      * 新启动一个p2p模块，注意四个参数绝对不能为null,在程序启动时调用
@@ -34,7 +35,7 @@ public final class XNet {
      * @throws Exception 当参数为null或者p2p模块加载不成功时抛出异常
      */
     public static int create(Context context, String appId, String appKey, String appSecretKey) throws Exception {
-        Log.i(TAG, "init XNet");
+        Log.i(TAG, "init XNet.");
         if (context == null || appId == null || appKey == null || appSecretKey == null) {
             throw new NullPointerException("context or appId or appKey or appSecretKey can't be null when init p2p live stream!");
         }
@@ -72,7 +73,7 @@ public final class XNet {
      * @return SDK的版本号
      */
     public static String getVersion() {
-        if (SDK_VERSION == null) {
+        if (sIsSoLoaded && SDK_VERSION == null) {
             SDK_VERSION = XNet._version();
         }
         return SDK_VERSION;
@@ -89,7 +90,7 @@ public final class XNet {
      * @return armeabi|armeabi-v7a|arm64-v8a|x86|x86_64
      * 返回5种架构中的一个获取null
      */
-    public static String getArchABI() {
+    private static String getArchABI() {
         if (archCpuAbi.isEmpty()) {
             archCpuAbi = XNet._targetArchABI();
         }
@@ -117,13 +118,18 @@ public final class XNet {
      */
     public static void setLoggerCallback(LoggerCallback logger) {
         LoggerCallback.setLoggerCallback(logger);
-        XNet._setLogger();
+        if (sIsSoLoaded) {
+            XNet._setLogger();
+        }
     }
 
-    public static int resume() {
-        XNet._resume();
-        XP2P_HOST = _host();
-        return 0;
+    public static boolean resume() {
+        if (sIsSoLoaded) {
+            XNet._resume();
+            XP2P_HOST = _host();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -188,13 +194,12 @@ public final class XNet {
     }
 
     private static void loadLibrary(Context context) throws Exception {
-        boolean loadLibSuccess = false;
         String exceptionMessage = "load library failed.";
         DynamicLibManager dynamicLibManager = new DynamicLibManager(context);
         try {
             if (!loadSoFromSdcard(dynamicLibManager)) {
                 System.loadLibrary("xp2p");
-                loadLibSuccess = true;
+                sIsSoLoaded = true;
             }
         } catch (Exception e) {
             Log.e(TAG, exceptionMessage, e);
@@ -204,7 +209,7 @@ public final class XNet {
             exceptionMessage = TextUtils.isEmpty(e.getMessage()) ? exceptionMessage : e.getMessage();
         }
 
-        if (!loadLibSuccess) {
+        if (!sIsSoLoaded) {
             throw new Exception(exceptionMessage);
         }
 
