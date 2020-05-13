@@ -2,13 +2,28 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'de.undercouch.download'
 
+boolean withNative = project.hasProperty("native") ? project.getProperty("native").toBoolean() : false
 android {
     compileSdkVersion 28
-    ndkVersion "21.0.6113669"
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 9
         targetSdkVersion 28
+
+        if (withNative) {
+            externalNativeBuild {
+                cmake {
+                    // 外部gradlew调用时通过如下命令传入参数
+                    // ./gradlew clean :xnet:assembleRelease externalNativeBuildRelease -PcmakeFlags="['-Dxxx', '-Dxxx']"
+                    if (project.hasProperty("cmakeFlags")) {
+                        arguments.addAll(Eval.me(cmakeFlags))
+                        println(arguments)
+                    }
+                    arguments "-DANDROID_STL=gnustl_static", "-DANDROID_PLATFORM=android-9"
+                    targets "xp2p_shared", "xp2p_static"
+                }
+            }
+        }
     }
 
     buildTypes {
@@ -28,6 +43,13 @@ android {
         }
     }
 
+    if (withNative) {
+        externalNativeBuild {
+            cmake {
+                path file('../../../../CMakeLists.txt')
+            }
+        }
+    }
 }
 
 task setHttpProxyFromEnv {
@@ -45,6 +67,7 @@ task setHttpProxyFromEnv {
 }
 
 task downloadZipFile(type: Download) {
+    dependsOn setHttpProxyFromEnv
     src 'https://xnet-android-1255868781.cos.ap-guangzhou.myqcloud.com/so.zip'
     dest new File(buildDir, 'so.zip')
     onlyIfModified true
@@ -55,7 +78,15 @@ task downloadAndUnzipFile(dependsOn: downloadZipFile, type: Copy) {
     into "$rootDir/xnet/src/main/jniLibs"
 }
 
-preBuild.dependsOn setHttpProxyFromEnv, downloadAndUnzipFile
+task cleanLocalLibrary(type: Delete) {
+    delete "$rootDir/xnet/src/main/jniLibs"
+}
+
+if (withNative) {
+    preBuild.dependsOn cleanLocalLibrary
+} else {
+    preBuild.dependsOn downloadAndUnzipFile
+}
 
 publish {
     repoName = 'xnet-android-sdk'
