@@ -3,8 +3,12 @@ apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'de.undercouch.download'
 
 boolean withNative = project.hasProperty("native") ? project.getProperty("native").toBoolean() : false
+String customNdkVersion = project.hasProperty("customNdkVersion") ? project.getProperty("customNdkVersion") : null
 android {
     compileSdkVersion 28
+    if (customNdkVersion != null) {
+        ndkVersion customNdkVersion
+    }
 
     defaultConfig {
         minSdkVersion 9
