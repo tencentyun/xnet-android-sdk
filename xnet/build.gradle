@@ -1,18 +1,23 @@
+import org.gradle.util.VersionNumber
+
+def gradle6 = VersionNumber.parse(gradle.gradleVersion) >= VersionNumber.parse('6.0.0')
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+if (!gradle6) {
+    apply plugin: 'com.novoda.bintray-release'
+}
 apply plugin: 'de.undercouch.download'
 
 boolean withNative = project.hasProperty("native") ? project.getProperty("native").toBoolean() : false
 String customNdkVersion = project.hasProperty("customNdkVersion") ? project.getProperty("customNdkVersion") : null
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     if (customNdkVersion != null) {
         ndkVersion customNdkVersion
     }
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 28
+        targetSdkVersion 29
 
         if (withNative) {
             externalNativeBuild {
@@ -92,14 +97,16 @@ if (withNative) {
     preBuild.dependsOn downloadAndUnzipFile
 }
 
-publish {
-    repoName = 'xnet-android-sdk'
-    userOrg = 'tencentyun'
-    groupId = 'com.tencent.qcloud'
-    artifactId = 'xnet'
-    publishVersion = '0.0.4'
-    desc = 'xnet android sdk'
-    website = 'https://github.com/tencentyun/xnet-android-sdk'
-}
+if (!gradle6) {
+    publish {
+        repoName = 'xnet-android-sdk'
+        userOrg = 'tencentyun'
+        groupId = 'com.tencent.qcloud'
+        artifactId = 'xnet'
+        publishVersion = '0.0.4'
+        desc = 'xnet android sdk'
+        website = 'https://github.com/tencentyun/xnet-android-sdk'
+    }
 
-bintrayUpload.dependsOn setHttpProxyFromEnv
+    bintrayUpload.dependsOn setHttpProxyFromEnv
+}
