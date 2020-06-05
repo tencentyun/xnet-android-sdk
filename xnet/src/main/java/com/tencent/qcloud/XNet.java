@@ -2,7 +2,6 @@ package com.tencent.qcloud;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -23,6 +22,26 @@ public final class XNet {
     private static String XP2P_HOST = "";
     private static WeakReference<Context> appCtx = null;
     private static boolean sIsSoLoaded = false;
+    private static String cacheDir = null;
+    private static String filesDir = null;
+
+    /**
+     * 设置conf目录，由于保存配置相关数据，默认为Context.getFilesDir
+     *
+     * @param dir conf目录的绝对路径
+     */
+    public static void setFilesDir(String dir) {
+        filesDir = dir;
+    }
+
+    /**
+     * 获取本地代理监听地址
+     *
+     * @return 本地代理监听地址, 默认为http://127.0.0.1:16080
+     */
+    public static String getHost() {
+        return XNet._host();
+    }
 
     /**
      * 新启动一个p2p模块，注意四个参数绝对不能为null,在程序启动时调用
@@ -48,15 +67,8 @@ public final class XNet {
     }
 
     /**
-     * 获取本地代理监听地址
-     * @return 本地代理监听地址, 默认为http://127.0.0.1:16080
-     */
-    public static String getHost() {
-        return XNet._host();
-    }
-
-    /**
      * 返回根据域名类型的代理域名, 直播domain默认为live.p2p.com
+     *
      * @param domain 代理域名, 直播domain默认为live.p2p.com
      * @return 本地代理监听host/path, 默认为http://127.0.0.1:16080/domain/
      */
@@ -65,6 +77,13 @@ public final class XNet {
             return "";
         }
         return XNet._host() + "/" + domain + "/";
+    }
+
+    @CalledByNative
+    private static String getCacheDir() {
+        if (cacheDir != null) return cacheDir;
+        Context ctx = appCtx.get();
+        return ctx != null ? ctx.getCacheDir().getAbsolutePath() : "/";
     }
 
     /**
@@ -219,15 +238,20 @@ public final class XNet {
         }
     }
 
-    @CalledByNative
-    private static String getCacheDir() {
-        Context ctx = appCtx.get();
-        return ctx != null ? ctx.getCacheDir().getAbsolutePath() : "/";
+    /**
+     * 设置cache目录，用于保存缓存相关数据，默认为Context.getCacheDir
+     *
+     * @param dir cache目录的绝对路径
+     */
+    public static void setCacheDir(String dir) {
+        cacheDir = dir;
     }
 
     @CalledByNative
     private static String getDiskDir() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath();
+        if (filesDir != null) return filesDir;
+        Context ctx = appCtx.get();
+        return ctx != null ? ctx.getFilesDir().getAbsolutePath() : "/";
     }
 
     @CalledByNative
