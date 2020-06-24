@@ -18,4 +18,4 @@ jobs:
     - name: Build with Gradle
       env: 
         BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-      run: ./gradlew xnet:build xnet:bintrayUpload -PbintrayUser=teckjiang -PbintrayKey=$BINTRAY_KEY -PdryRun=false -PcustomNdkVersion=21.1.6352462
+      run: ./gradlew xnet:build xnet:bintrayUpload -PbintrayUser=teckjiang -PbintrayKey=$BINTRAY_KEY -PdryRun=false -PcustomNdkVersion=21.3.6528147
