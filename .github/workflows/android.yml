@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
+    - name: Install NDK
+      run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;21.1.6352462" --sdk_root=${ANDROID_SDK_ROOT}
     - uses: actions/checkout@v2
     - name: set up JDK 1.8
       uses: actions/setup-java@v1
