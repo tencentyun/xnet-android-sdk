@@ -19,7 +19,6 @@ public final class XNet {
     // 持久保存SDK版本号
     private static String SDK_VERSION;
     private static String archCpuAbi = "";
-    private static String XP2P_HOST = "";
     private static WeakReference<Context> appCtx = null;
     private static boolean sIsSoLoaded = false;
     private static String cacheDir = null;
@@ -61,7 +60,7 @@ public final class XNet {
         appCtx = new WeakReference<>(context);
         loadLibrary(context);
         if (_construct(appId, appKey, appSecretKey, ((ContextWrapper) context).getBaseContext()) > 0) {
-            XP2P_HOST = _host();
+            //
         }
         return 0;
     }
@@ -73,10 +72,7 @@ public final class XNet {
      * @return 本地代理监听host/path, 默认为http://127.0.0.1:16080/domain/
      */
     public static String proxyOf(String domain) {
-        if (TextUtils.isEmpty(XP2P_HOST)) {
-            return "";
-        }
-        return XNet._host() + "/" + domain + "/";
+        return getHost() + "/" + domain + "/";
     }
 
     @CalledByNative
@@ -145,7 +141,6 @@ public final class XNet {
     public static boolean resume() {
         if (sIsSoLoaded) {
             XNet._resume();
-            XP2P_HOST = _host();
             return true;
         }
         return false;
