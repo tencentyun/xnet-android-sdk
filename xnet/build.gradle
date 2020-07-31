@@ -77,7 +77,7 @@ task setHttpProxyFromEnv {
 
 task downloadZipFile(type: Download) {
     dependsOn setHttpProxyFromEnv
-    src 'https://xnet-android-1255868781.cos.ap-guangzhou.myqcloud.com/so.zip'
+    src 'https://xnet-android-1258344699.cos.ap-nanjing.myqcloud.com/XP2P_CLIENT_HUYA_v2.01.03/XP2P_CLIENT_HUYA_v2.01.03_so.zip'
     dest new File(buildDir, 'so.zip')
     onlyIfModified true
 }
@@ -103,7 +103,7 @@ if (!gradle6) {
         userOrg = 'tencentyun'
         groupId = 'com.tencent.qcloud'
         artifactId = 'xnet'
-        publishVersion = '0.0.4'
+        publishVersion = 'huya-1.0.5'
         desc = 'xnet android sdk'
         website = 'https://github.com/tencentyun/xnet-android-sdk'
     }
