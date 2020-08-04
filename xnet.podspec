@@ -20,7 +20,7 @@ Pod::Spec.new do |spec|
     unzip -o TencentXP2P.framework.zip
                    CMD
   spec.requires_arc = true
-  spec.ios.deployment_target = "9.0"
+  spec.ios.deployment_target = "8.0"
   spec.source_files = "Classes/xnet/*.{h,m,mm,c,cc,cpp}"
   spec.vendored_frameworks = "TencentXP2P.framework"
   spec.frameworks = 'TencentXP2P'
