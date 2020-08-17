@@ -62,6 +62,10 @@ static void defaultLog(int prio, const char* msg) {
     }
 }
 
++ (void)alias:(NSString*)host of:(NSString*)name {
+    XP2PService::alias([host UTF8String], [name UTF8String]);
+}
+
 + (int)resume {
     XP2PService::resume();
     host = [[NSString alloc] initWithCString:(const char*)XP2PService::host().c_str()

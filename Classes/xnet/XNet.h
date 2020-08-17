@@ -26,5 +26,6 @@ __attribute__((visibility("default")))
 + (int)resume;
 + (NSString*)host;
 + (NSString*)proxyOf:(NSString*)domain;
++ (void)alias:(NSString*)host of:(NSString*)name;
 @end
 #endif /* XNet_h */
