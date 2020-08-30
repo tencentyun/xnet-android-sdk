@@ -43,6 +43,16 @@ public final class XNet {
     }
 
     /**
+     * 设置本地监听域名别名
+     *
+     * @param host sdk 监听域名
+     * @param name sdk alias 别名
+     */
+    public static void alias(String host, String name) {
+        XNet._alias(host, name);
+    }
+
+    /**
      * 新启动一个p2p模块，注意四个参数绝对不能为null,在程序启动时调用
      *
      * @param context      上下文
@@ -193,6 +203,14 @@ public final class XNet {
      * app从后台回到前后时调用
      */
     private static native void _resume();
+
+    /**
+     * 设置本地监听域名别名
+     *
+     * @param host sdk 监听域名
+     * @param name sdk alias 别名
+     */
+    private static native void _alias(String host, String name);
 
     private static boolean loadSoFromSdcard(DynamicLibManager dynamicLibManager) {
         try {
