@@ -231,8 +231,8 @@ public final class XNet {
         try {
             if (!loadSoFromSdcard(dynamicLibManager)) {
                 System.loadLibrary("xp2p");
-                sIsSoLoaded = true;
             }
+            sIsSoLoaded = true;
         } catch (Exception e) {
             Log.e(TAG, exceptionMessage, e);
             exceptionMessage = TextUtils.isEmpty(e.getMessage()) ? exceptionMessage : e.getMessage();
