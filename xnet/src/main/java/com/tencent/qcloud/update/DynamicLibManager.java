@@ -105,7 +105,7 @@ public class DynamicLibManager {
                     String token = MD5Util.MD5((timeStamp + "qvb2017tencent" + packageName).getBytes());
 
                     StringBuffer sb = new StringBuffer();
-                    sb.append("http://update.qvb.qcloud.com/checkupdate").append("/v2")
+                    sb.append("https://update.qvb.qcloud.com/checkupdate").append("/v2")
                             .append("?abi=").append(arch)
                             .append("&token=").append(token)
                             .append("&timeStamp=").append(timeStamp)
