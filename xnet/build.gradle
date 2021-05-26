@@ -28,7 +28,7 @@ android {
                         arguments.addAll(Eval.me(cmakeFlags))
                         println(arguments)
                     }
-                    arguments "-DANDROID_STL=gnustl_static", "-DANDROID_PLATFORM=android-9"
+                    arguments "-DANDROID_STL=c++_static", "-DANDROID_PLATFORM=android-9"
                     targets "xp2p_shared", "xp2p_static"
                 }
             }
@@ -37,6 +37,13 @@ android {
 
     buildTypes {
         debug {
+            if (withNative) {
+                externalNativeBuild {
+                    cmake {
+                        cppFlags "-DXP2P_VERSION=android_debug"
+                    }
+                }
+            }
             ndk {
                 abiFilters 'arm64-v8a'
             }
