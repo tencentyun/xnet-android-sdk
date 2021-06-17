@@ -1,4 +1,4 @@
-package com.tencent.qcloud;
+package com.qcloud.qvb;
 
 /**
  * Created by rongerwu on 2019-10-08.
