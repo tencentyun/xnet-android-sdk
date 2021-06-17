@@ -1,4 +1,4 @@
-package com.tencent.qcloud;
+package com.qcloud.qvb;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.tencent.qcloud.update.DynamicLibManager;
+import com.qcloud.qvb.update.DynamicLibManager;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;

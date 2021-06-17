@@ -1,10 +1,8 @@
 import org.gradle.util.VersionNumber
 
-def gradle6 = VersionNumber.parse(gradle.gradleVersion) >= VersionNumber.parse('6.0.0')
 apply plugin: 'com.android.library'
-if (!gradle6) {
-    apply plugin: 'com.novoda.bintray-release'
-}
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 apply plugin: 'de.undercouch.download'
 
 boolean withNative = project.hasProperty("native") ? project.getProperty("native").toBoolean() : false
@@ -38,7 +36,7 @@ android {
     buildTypes {
         debug {
             ndk {
-                abiFilters 'armeabi-v7a'
+                abiFilters 'arm64-v8a'
             }
         }
 
@@ -97,16 +95,88 @@ if (withNative) {
     preBuild.dependsOn downloadAndUnzipFile
 }
 
-if (!gradle6) {
-    publish {
-        repoName = 'xnet-android-sdk'
-        userOrg = 'tencentyun'
-        groupId = 'com.tencent.qcloud'
-        artifactId = 'xnet'
-        publishVersion = 'AAR_PUBLISH_VERSION'
-        desc = 'xnet android sdk'
-        website = 'https://github.com/tencentyun/xnet-android-sdk'
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    android.libraryVariants.all { variant ->
+        if (variant.name == 'release') {
+            owner.classpath += variant.javaCompileProvider.get().classpath
+        }
     }
+    exclude '**/R.html', '**/R.*.html', '**/index.html'
+}
 
-    bintrayUpload.dependsOn setHttpProxyFromEnv
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    archiveClassifier.set('javadoc')
+    from androidJavadocs.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+
+
+File secretPropsFile = project.rootProject.file('local.properties')
+if (secretPropsFile.exists()) {
+    println "Found secret props file, loading props"
+    Properties p = new Properties()
+    p.load(new FileInputStream(secretPropsFile))
+    p.each { name, value ->
+        ext[name] = value
+    }
+} else {
+    println "No props file, loading env vars"
+}
+
+group = 'com.qcloud.qvb'
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId group
+            artifactId 'xnet'
+            version 'AAR_PUBLISH_VERSION'
+
+            artifact androidJavadocsJar
+            artifact androidSourcesJar
+            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+
+            pom {
+                name = 'xnet'
+                description = 'xnet android sdk'
+                url = 'https://github.com/tencentyun/xnet-android-sdk'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://github.com/tencentyun/xnet-android-sdk/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'p2p_group'
+                        name = 'xp2p group'
+                        email = 'xp2p_developer@tencent.com'
+                    }
+                }
+                scm {
+                    url = 'scm:git@github.com:tencentyun/xnet-android-sdk.git'
+                    connection = 'scm:git@github.com:tencentyun/xnet-android-sdk.git'
+                    developerConnection = 'scm:git@github.com:tencentyun/xnet-android-sdk.git'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            credentials {
+                username = ossrusername
+                password = ossrpassword
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.release
 }

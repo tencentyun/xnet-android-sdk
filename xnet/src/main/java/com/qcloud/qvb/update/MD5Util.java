@@ -1,4 +1,4 @@
-package com.tencent.qcloud.update;
+package com.qcloud.qvb.update;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

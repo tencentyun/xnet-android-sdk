@@ -1,4 +1,4 @@
-package com.tencent.qcloud.update;
+package com.qcloud.qvb.update;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -33,7 +33,7 @@ public class DynamicLibManager {
     private String libPath;
 
     //jni接口版本
-    private String jniVersion = "v7";
+    private String jniVersion = "v8";
     private boolean supportHttps = false;
     private String archAbi = "";
 

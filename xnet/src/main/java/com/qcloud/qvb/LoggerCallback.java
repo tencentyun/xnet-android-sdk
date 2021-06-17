@@ -1,4 +1,4 @@
-package com.tencent.qcloud;
+package com.qcloud.qvb;
 
 public abstract class LoggerCallback {
 
