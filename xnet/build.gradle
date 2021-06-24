@@ -130,6 +130,8 @@ if (secretPropsFile.exists()) {
 }
 
 group = 'com.qcloud.qvb'
+def ossrusername = ''
+def ossrpassword = ''
 publishing {
     publications {
         release(MavenPublication) {
