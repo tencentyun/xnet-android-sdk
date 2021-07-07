@@ -7,6 +7,8 @@ apply plugin: 'de.undercouch.download'
 
 boolean withNative = project.hasProperty("native") ? project.getProperty("native").toBoolean() : false
 String customNdkVersion = project.hasProperty("customNdkVersion") ? project.getProperty("customNdkVersion") : null
+String ossrusername = project.hasProperty("ossrusername") ? project.getProperty("ossrusername") : null
+String ossrpassword = project.hasProperty("ossrpassword") ? project.getProperty("ossrpassword") : null
 android {
     compileSdkVersion 29
     if (customNdkVersion != null) {
@@ -130,8 +132,6 @@ if (secretPropsFile.exists()) {
 }
 
 group = 'com.qcloud.qvb'
-def ossrusername = ''
-def ossrpassword = ''
 publishing {
     publications {
         release(MavenPublication) {
