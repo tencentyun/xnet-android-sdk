@@ -77,7 +77,7 @@ task setHttpProxyFromEnv {
 
 task downloadZipFile(type: Download) {
     dependsOn setHttpProxyFromEnv
-    src 'SO_PATH'
+    src 'https://xnet-android-1258344699.cos.ap-nanjing.myqcloud.com/_v1.1.28/_v1.1.28_so.zip'
     dest new File(buildDir, 'so.zip')
     onlyIfModified true
 }
@@ -137,7 +137,7 @@ publishing {
         release(MavenPublication) {
             groupId group
             artifactId 'xnet'
-            version 'AAR_PUBLISH_VERSION'
+            version '1.1.28'
 
             artifact androidJavadocsJar
             artifact androidSourcesJar
