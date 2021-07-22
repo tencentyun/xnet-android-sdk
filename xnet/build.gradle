@@ -10,6 +10,9 @@ String customNdkVersion = project.hasProperty("customNdkVersion") ? project.getP
 String ossrusername = project.hasProperty("ossrusername") ? project.getProperty("ossrusername") : null
 String ossrpassword = project.hasProperty("ossrpassword") ? project.getProperty("ossrpassword") : null
 String cmakeFlags = project.hasProperty("cmakeFlags") ? project.getProperty("cmakeFlags") : null
+println("withNative:" + withNative)
+println("cmakeFlags:" + cmakeFlags)
+
 android {
     compileSdkVersion 29
     if (customNdkVersion != null) {
