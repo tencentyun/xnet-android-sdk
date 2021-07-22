@@ -73,15 +73,18 @@ android {
 }
 
 task setHttpProxyFromEnv {
-    def map = ['HTTP_PROXY': 'http', 'HTTPS_PROXY': 'https']
-    for (e in System.getenv()) {
-        def key = e.key.toUpperCase()
-        def base = map[key]
-        if (base?.value) {
-            def url = e.value.toURL()
-            println " - systemProp.${base}.proxy=${url.host}:${url.port}"
-            System.setProperty("${base}.proxyHost", url.host.toString())
-            System.setProperty("${base}.proxyPort", url.port.toString())
+    // 加doLast，避免写成配置代码（gradle会执行所有task的配置代码）
+    doFirst {
+        def map = ['HTTP_PROXY': 'http', 'HTTPS_PROXY': 'https']
+        for (e in System.getenv()) {
+            def key = e.key.toUpperCase()
+            def base = map[key]
+            if (base?.value) {
+                def url = e.value.toURL()
+                println " - systemProp.${base}.proxy=${url.host}:${url.port}"
+                System.setProperty("${base}.proxyHost", url.host.toString())
+                System.setProperty("${base}.proxyPort", url.port.toString())
+            }
         }
     }
 }
