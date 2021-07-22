@@ -9,6 +9,7 @@ boolean withNative = project.hasProperty("native") ? project.getProperty("native
 String customNdkVersion = project.hasProperty("customNdkVersion") ? project.getProperty("customNdkVersion") : null
 String ossrusername = project.hasProperty("ossrusername") ? project.getProperty("ossrusername") : null
 String ossrpassword = project.hasProperty("ossrpassword") ? project.getProperty("ossrpassword") : null
+String cmakeFlags = project.hasProperty("cmakeFlags") ? project.getProperty("cmakeFlags") : null
 android {
     compileSdkVersion 29
     if (customNdkVersion != null) {
@@ -16,7 +17,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 19
         targetSdkVersion 29
 
         if (withNative) {
@@ -24,11 +25,11 @@ android {
                 cmake {
                     // 外部gradlew调用时通过如下命令传入参数
                     // ./gradlew clean :xnet:assembleRelease externalNativeBuildRelease -PcmakeFlags="['-Dxxx', '-Dxxx']"
-                    if (project.hasProperty("cmakeFlags")) {
+                    if (cmakeFlags) {
                         arguments.addAll(Eval.me(cmakeFlags))
                         println(arguments)
                     }
-                    arguments "-DANDROID_STL=c++_static", "-DANDROID_PLATFORM=android-9"
+                    arguments "-DANDROID_STL=c++_static"
                     targets "xp2p_shared", "xp2p_static"
                 }
             }
@@ -37,7 +38,7 @@ android {
 
     buildTypes {
         debug {
-            if (withNative) {
+            if (withNative && (!cmakeFlags || !cmakeFlags.contains("XP2P_VERSION"))) {
                 externalNativeBuild {
                     cmake {
                         cppFlags "-DXP2P_VERSION=android_debug"
