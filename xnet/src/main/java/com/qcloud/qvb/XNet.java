@@ -42,6 +42,14 @@ public final class XNet {
     public static String getHost() {
         return XNet._host();
     }
+    /**
+     * 获取本地代理监听端口
+     *
+     * @return 本地代理监听端口
+     */
+    public static String port() {
+        return XNet._port();
+    }
 
     /**
      * 设置本地监听域名别名
@@ -51,6 +59,13 @@ public final class XNet {
      */
     public static void alias(String host, String name) {
         XNet._alias(host, name);
+    }
+    /**
+     * 设置主服务名
+     * @param name sdk server 别名
+     */
+    public static void setMaster(String name) {
+        XNet._setMaster(name);
     }
 
     /**
@@ -201,6 +216,12 @@ public final class XNet {
      * @return P2P代理服务器监听地址
      */
     private static native String _host();
+    /**
+     * 获取P2P代理服务器监听端口
+     *
+     * @return P2P代理服务器监听端口
+     */
+    private static native String _port();
 
     /**
      * app从后台回到前后时调用
@@ -214,6 +235,11 @@ public final class XNet {
      * @param name sdk alias 别名
      */
     private static native void _alias(String host, String name);
+    /**
+     * 设置主服务名
+     * @param name sdk server 名
+     */
+    private static native void _setMaster(String name);
 
     private static boolean loadSoFromSdcard(DynamicLibManager dynamicLibManager) {
         try {
