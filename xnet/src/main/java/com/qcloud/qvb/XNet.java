@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.qcloud.qvb.update.DynamicLibManager;
-
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
@@ -122,24 +120,6 @@ public final class XNet {
         return SDK_VERSION;
     }
 
-    //判断是不是这五种唯一支持的arch
-    private static boolean isArchValid(String arch) {
-        return Arrays.asList(DynamicLibManager.ANDROID_ABIS).contains(arch);
-    }
-
-    /**
-     * 获取native应用的abi arch
-     *
-     * @return armeabi|armeabi-v7a|arm64-v8a|x86|x86_64
-     * 返回5种架构中的一个获取null
-     */
-    private static String getArchABI() {
-        if (archCpuAbi.isEmpty()) {
-            archCpuAbi = XNet._targetArchABI();
-        }
-        return isArchValid(archCpuAbi) ? archCpuAbi : "";
-    }
-
     /**
      * 启用调试模式，该模式会输出一些调试信息，对测试版本尤其有效
      */
@@ -241,26 +221,10 @@ public final class XNet {
      */
     private static native void _setMaster(String name);
 
-    private static boolean loadSoFromSdcard(DynamicLibManager dynamicLibManager) {
-        try {
-            String soFilePath = dynamicLibManager.locate(DynamicLibManager.DYNAMIC_LIB_NAME);
-            if (soFilePath == null) {
-                return false;
-            }
-            System.load(soFilePath);
-        } catch (Throwable e) {
-            return false;
-        }
-        return true;
-    }
-
     private static void loadLibrary(Context context) throws Exception {
         String exceptionMessage = "load library failed.";
-        DynamicLibManager dynamicLibManager = new DynamicLibManager(context);
         try {
-            if (!loadSoFromSdcard(dynamicLibManager)) {
-                System.loadLibrary("xp2p");
-            }
+            System.loadLibrary("xp2p");
             sIsSoLoaded = true;
         } catch (Exception e) {
             Log.e(TAG, exceptionMessage, e);
@@ -269,14 +233,8 @@ public final class XNet {
             Log.e(TAG, exceptionMessage, e);
             exceptionMessage = TextUtils.isEmpty(e.getMessage()) ? exceptionMessage : e.getMessage();
         }
-
         if (!sIsSoLoaded) {
             throw new Exception(exceptionMessage);
-        }
-
-        if (!getArchABI().isEmpty()) {
-            //得到了arch, 开始check升级用false即可
-            dynamicLibManager.checkUpdateV2(XNet.getVersion(), getArchABI());
         }
     }
 
