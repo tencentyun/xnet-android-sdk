@@ -27,7 +27,7 @@ android {
                         println(arguments)
                     }
                     arguments "-DANDROID_STL=c++_static"
-                    targets "xp2p_shared", "xp2p_static"
+                    targets "AdvanceP2P_shared", "AdvanceP2P_static"
                 }
             }
         }

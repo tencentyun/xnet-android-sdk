@@ -79,6 +79,14 @@ public final class XNet {
     }
 
     /**
+     * 销毁p2p模块
+     */
+    public static void destroy() {
+        Log.i(TAG, "destroy XNet.");
+        _destroy();
+    }
+
+    /**
      * 返回根据域名类型的代理域名, 直播domain默认为live.p2p.com
      *
      * @param domain 代理域名, 直播domain默认为live.p2p.com
