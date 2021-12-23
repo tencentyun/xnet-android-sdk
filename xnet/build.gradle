@@ -14,8 +14,8 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 29
+        minSdkVersion 14
+        targetSdkVersion 26
 
         if (withNative) {
             externalNativeBuild {
