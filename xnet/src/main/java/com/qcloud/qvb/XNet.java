@@ -2,7 +2,6 @@ package com.qcloud.qvb;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -71,10 +70,6 @@ public final class XNet {
         appCtx = new WeakReference<>(context);
         loadLibrary(context);
         int ret = (int) _construct(appId, appKey, appSecretKey, ((ContextWrapper) context).getBaseContext());
-        SharedPreferences settings = context.getApplicationContext().getSharedPreferences("BuglySdkInfos", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("e30245116c", getVersion());
-        editor.commit();
         return ret;
     }
 
