@@ -30,4 +30,4 @@ jobs:
       run: |
         echo $GPG_SIGNING_KEY | base64 --decode > ./secring.asc
         gpg --quiet --output $GITHUB_WORKSPACE/secring.gpg --dearmor ./secring.asc
-        ./gradlew xnet:build xnet:publish -Possrusername=p2p_group -Possrpassword=$OSSR_PASSWORD -Psigning.keyId=$GPG_KEY_ID -Psigning.password=$GPG_PASSWORD -Psigning.secretKeyRingFile=$GITHUB_WORKSPACE/secring.gpg -PdryRun=false -PcustomNdkVersion=21.1.6352462
+        ./gradlew xnet:build xnet:publish -Possrusername=p2p_group -Possrpassword=$OSSR_PASSWORD -Psigning.keyId=$GPG_KEY_ID -Psigning.password=$GPG_PASSWORD -Psigning.secretKeyRingFile=$GITHUB_WORKSPACE/secring.gpg -PdryRun=false -PcustomNdkVersion=21.4.7075529
